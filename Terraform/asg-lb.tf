@@ -12,8 +12,8 @@ resource "aws_launch_configuration" "launch_configuration_1" {
 }
 
 resource "aws_autoscaling_group" "asg-1" {
-  launch_configuration = aws_launch_configuration.launch-configuration-1
-  vpc_zone_identifier = data.aws_subnet_ids.default.ids
+  launch_configuration = aws_launch_configuration.launch_configuration_1.id
+  vpc_zone_identifier = [aws_subnet.my_subnet.id]
 
   target_group_arns = [aws_lb_target_group.asg.arn]
   health_check_type = "ELB"
@@ -52,9 +52,9 @@ resource "aws_lb_listener" "http" {
 
 resource "aws_lb_target_group" "asg" {
   name = "terraform-asg-example"
-  port = var.sever_port
+  port = var.server_port
   protocol = "HTTP"
-  vpc_id = data.aws_vpc.default.id
+  vpc_id = aws_vpc.my_vpc
   
   health_check {
     path ="/"
