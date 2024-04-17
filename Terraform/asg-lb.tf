@@ -31,12 +31,12 @@ resource "aws_autoscaling_group" "asg-1" {
 resource "aws_lb" "lb-1" {
   name = "terraform-lb-1"
   load_balancer_type = "application"
-  subnets = data.aws_subnet_ids.default.ids
-  security_groups = [aws_security_group.alb]
+  subnets = [aws_subnet.my_subnet.id]
+  security_groups = [aws_security_group.alb.id]
 }
 
 resource "aws_lb_listener" "http" {
-  load_balancer_arn = aws_lb.lb-1
+  load_balancer_arn = aws_lb.lb-1.id
   port = 80
   protocol = "HTTP"
 
@@ -54,7 +54,7 @@ resource "aws_lb_target_group" "asg" {
   name = "terraform-asg-example"
   port = var.server_port
   protocol = "HTTP"
-  vpc_id = aws_vpc.my_vpc
+  vpc_id = aws_vpc.my_vpc.id
   
   health_check {
     path ="/"
