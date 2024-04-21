@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-Login Page
+로그인 페이지 
 {% endblock %}
 
 {% block content %}
@@ -10,20 +10,20 @@ Login Page
             {{ form.hidden_tag() }}
             <img class="mb-4" src="https://res.cloudinary.com/jimshapedcoding/image/upload/v1597332609/android-icon-192x192_ove2a7.png" alt="">
             <h1 class="h3 mb-3 font-weight-normal">
-                Please Login
+                로그인을 해주세요 
             </h1>
             <br>
             {{ form.username.label() }}
-            {{ form.username(class="form-control", placeholder="User Name") }}
+            {{ form.username(class="form-control", placeholder="아이디 입력") }}
 
             {{ form.password.label() }}
-            {{ form.password(class="form-control", placeholder="Password") }}
+            {{ form.password(class="form-control", placeholder="비밀번호 입력") }}
 
             <br>
 
 
             <div class="checkbox mb-3">
-               <h6>Do not have an account?</h6>
+               <h6>아이디가 없으신가요?</h6>
                <a class="btn btn-sm btn-secondary" href="{{ url_for('register_page') }}">Register</a>
             </div>
 

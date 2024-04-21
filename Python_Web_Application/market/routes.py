@@ -70,10 +70,10 @@ def login_page():
             attempted_password=form.password.data
         ):
             login_user(attempted_user)
-            flash(f'Success! You are logged in as: {attempted_user.username}', category='success')
+            flash(f'로그인에 성공하셨습니다. 환영합니다 {attempted_user.username}님.', category='success')
             return redirect(url_for('market_page'))
         else:
-            flash('Username and password are not match! Please try again', category= 'danger')
+            flash('아이디와 비밀번호가 다릅니다. 다시 시도 해주세요', category= 'danger')
 
     return render_template('login.html', form=form)
 

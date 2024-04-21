@@ -23,9 +23,9 @@ class RegisterFrom(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    username =StringField(label='User Name:', validators=[DataRequired()])
-    password = PasswordField(label='Password:', validators=[DataRequired()])
-    submit =SubmitField(label='Sign in')
+    username =StringField(label='아이디:', validators=[DataRequired()])
+    password = PasswordField(label='비밀번호:', validators=[DataRequired()])
+    submit =SubmitField(label='로그인')
 
 class PurchaseItemForm(FlaskForm):
     submit = SubmitField(label='Purchase Item!')
