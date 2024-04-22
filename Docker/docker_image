@@ -1,0 +1,7 @@
+apt-get update
+apt-get install -y python3 locales
+apt-get install -y python3-pip
+
+
+pip install Flask SQLAlchemy Flask-Bcrypt Flask-Login
+pip install Flask-WTF WTForms Flask-Login Flask-SQLAlchemy

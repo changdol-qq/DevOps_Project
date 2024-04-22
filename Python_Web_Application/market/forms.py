@@ -15,11 +15,11 @@ class RegisterFrom(FlaskForm):
         if email_address:
             raise ValidationError('Email Address already exists! Please try a different email address')
 
-    username = StringField(label='User Name:', validators=[Length(min=2, max=30), DataRequired()])
-    email_address = StringField(label='Email Address:', validators=[Email(),DataRequired()])
-    password1 = PasswordField(label='Password:', validators=[Length(min=6),DataRequired()])
-    password2 = PasswordField(label='Confirm Password', validators=[EqualTo('password1'),DataRequired()])
-    submit = SubmitField(label='Create Account')
+    username = StringField(label='아이디:', validators=[Length(min=2, max=30), DataRequired()])
+    email_address = StringField(label='이메일 주소:', validators=[Email(),DataRequired()])
+    password1 = PasswordField(label='비밀번호:', validators=[Length(min=6),DataRequired()])
+    password2 = PasswordField(label='비밀번호 확인', validators=[EqualTo('password1'),DataRequired()])
+    submit = SubmitField(label='계정 생성')
 
 
 class LoginForm(FlaskForm):
