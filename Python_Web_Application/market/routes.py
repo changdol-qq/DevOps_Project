@@ -21,21 +21,16 @@ def market_page():
         #Purchase Item Logic
         purchased_item = request.form.get('purchased_item')
         p_item_object = Item.query.filter_by(name=purchased_item).first()
-        if p_item_object:
-            if current_user.can_purchase(p_item_object):
-                p_item_object.buy(current_user)
-                flash(f"Congratulations! You purchased {p_item_object.name} for {p_item_object.price}$", category='success')
-            else:
-                flash(f"Unfortunately, you don't have enough money to purchase {p_item_object.name}!", category='danger')
+        if p_item_object: 
+            p_item_object.buy(current_user)
+            flash(f"이벤트 참석이 등록되었습니다. {p_item_object.name} for {p_item_object.price}$", category='success')
+            
         #Sell Item Logic
         sold_item = request.form.get('sold_item')
         s_item_object = Item.query.filter_by(name=sold_item).first()
         if s_item_object:
-            if current_user.can_sell(s_item_object):
-                s_item_object.sell(current_user)
-                flash(f"Congratulations! You sold {s_item_object.name} back to market!", category='success')
-            else:
-                flash(f"Something went wrong with selling {s_item_object}", category='danger')
+            s_item_object.sell(current_user)
+            flash(f"이벤트 참석이 취소되었습니다. {s_item_object.name} back to market!", category='success')
 
         return redirect(url_for('market_page'))
     
@@ -58,7 +53,7 @@ def register_page():
         return redirect(url_for('market_page'))
     if form.errors != {}: #If there are not errors from the validations
         for err_msg in form.errors.values():
-            flash(f'There was an error with createing a user:{err_msg}', category='danger')
+            flash(f'유저를 생성하는데 에러가 발생했습니다.:{err_msg}', category='danger')
     return render_template('register.html', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -80,6 +75,6 @@ def login_page():
 @app.route('/logout')
 def logout_page():
     logout_user()
-    flash("You have been logged out!", category='info')
+    flash("로그아웃 되었습니다.", category='info')
     return redirect(url_for("home_page"))
 

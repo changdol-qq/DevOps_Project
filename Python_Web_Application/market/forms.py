@@ -13,7 +13,7 @@ class RegisterFrom(FlaskForm):
     def validate_email_address(self, email_address_to_check):
         email_address = User.query.filter_by(email_address=email_address_to_check.data).first()
         if email_address:
-            raise ValidationError('Email Address already exists! Please try a different email address')
+            raise ValidationError('메일주소가 사용중입니다. 다른 이메일 아이디를 사용해주세요')
 
     username = StringField(label='아이디:', validators=[Length(min=2, max=30), DataRequired()])
     email_address = StringField(label='이메일 주소:', validators=[Email(),DataRequired()])
@@ -28,7 +28,7 @@ class LoginForm(FlaskForm):
     submit =SubmitField(label='로그인')
 
 class PurchaseItemForm(FlaskForm):
-    submit = SubmitField(label='Purchase Item!')
+    submit = SubmitField(label='이벤트 참석')
 
 class SellItemForm(FlaskForm):
-    submit = SubmitField(label='Sell Item!')
+    submit = SubmitField(label='참석 취소')
