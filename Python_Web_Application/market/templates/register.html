@@ -10,25 +10,25 @@ Register Page
             {{ form.hidden_tag()}}
             <img class="mb-4" src="https://res.cloudinary.com/jimshapedcoding/image/upload/v1597332609/android-icon-192x192_ove2a7.png" alt="">
             <h1 class="h3 mb-3 font-weight-normal">
-                    Please Create your Account
+                   계정을 생성해 주세요 
             </h1>
             <br>
             {{ form.username.label() }}
-            {{ form.username(class="form-control", placeholder="User Name") }}
+            {{ form.username(class="form-control", placeholder="아이디")}}
             
             {{ form.email_address.label() }}
-            {{ form.email_address(class="form-control", placeholder="Email Address") }}
+            {{ form.email_address(class="form-control", placeholder="이메일 주소") }}
 
             {{ form.password1.label() }}
-            {{ form.password1(class="form-control", placeholder="Password") }}
+            {{ form.password1(class="form-control", placeholder="비밀번호") }}
 
             {{ form.password2.label() }}
-            {{ form.password2(class="form-control", placeholder="Confirm Password:") }}
+            {{ form.password2(class="form-control", placeholder="비밀번호 확인") }}
 
             <br>
             <div class="checkbox mb-3">
-                <h6>Already have an account?</h6>
-                <a class="btn btn-sm btn-secondary" href="{{ url_for('login_page') }}">Login</a>
+                <h6>계정을 가지고 계신가요?</h6>
+                <a class="btn btn-sm btn-secondary" href="{{ url_for('login_page') }}">로그인</a>
              </div>
             {{ form.submit(class="btn btn-lg btn-block btn-primary")}}
             

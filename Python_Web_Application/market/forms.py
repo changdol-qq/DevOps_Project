@@ -8,12 +8,12 @@ class RegisterFrom(FlaskForm):
     def validate_username(self, username_to_ckeck):
         user = User.query.filter_by(username=username_to_ckeck.data).first()
         if user:
-            raise ValidationError('Username already exists! Please try a different username')
+            raise ValidationError('아이디가 이미 사용중입니다. 다른 아이디를 사용해주세요')
 
     def validate_email_address(self, email_address_to_check):
         email_address = User.query.filter_by(email_address=email_address_to_check.data).first()
         if email_address:
-            raise ValidationError('메일주소가 사용중입니다. 다른 이메일 아이디를 사용해주세요')
+            raise ValidationError('이메일주소가 이미 사용중입니다. 다른 이메일 주소를 사용해주세요')
 
     username = StringField(label='아이디:', validators=[Length(min=2, max=30), DataRequired()])
     email_address = StringField(label='이메일 주소:', validators=[Email(),DataRequired()])
