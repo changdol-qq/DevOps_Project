@@ -54,10 +54,10 @@
             {{ purchase_form.hidden_tag() }}
 
             <h4 class="text-center">
-                Are you sure you want to buy {{ item.name }} for {{ item.price }}$ ?
+                 {{ item.name }} for {{ item.price }} 이벤트에 참석하시겠습니까?
             </h4>
             <h6 class="text-center">
-                By clicking Purchase, you will purchase this item.
+                아래 버튼을 클릭하여 참석
             </h6>
             <br>
             <input id="purchased_item" name="purchased_item" type="hidden" value="{{item.name}}">

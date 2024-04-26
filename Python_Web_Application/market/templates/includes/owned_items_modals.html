@@ -26,10 +26,10 @@
       {{ selling_form.hidden_tag() }}
 
       <h4 class="text-center">
-          Are you sure you want to buy {{ owned_item.name }} for {{ owned_item.price }}$ ?
+           {{ owned_item.name }} for {{ owned_item.price }} 이벤트 참석을 취소하시겠습니까?
       </h4>
       <h6 class="text-center">
-          By clicking Sell, you will put this item back on market
+          아래 버튼을 클릭하여 참석 취소
       </h6>
       <br>
       <input id="sold_item" name="sold_item" type="hidden" value="{{owned_item.name}}">

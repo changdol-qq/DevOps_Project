@@ -1,12 +1,75 @@
-resource "aws_security_group" "security_group_1" {
-  name = "terraform-example-instance"
+resource "aws_security_group" "worker_node_sg" {
+  name = "terraform-worker-node-sg"  
   ingress{
-    from_port = var.server_port
-    to_port   = var.server_port
+    from_port = 30000
+    to_port   = 32767
     protocol  = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    #CIDR 블록 0.0.0.0/0(anywhere)에서 8080포트로 들어오는 TCP 요청 허용
+  }
+  ingress{
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress{
+    from_port = 6783
+    to_port   = 6784
+    protocol  = "udp"
+    cidr_blocks = [var.vpc_cidr]
+  }
+  ingress{
+    from_port = 6783
+    to_port   = 6783
+    protocol  = "tcp"
+    cidr_blocks = [var.vpc_cidr]
+  }
+  egress = {
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_security_group" "control_plane_sg" {
+  name = "terraform-control-plane-sg"
+  ingress{ 
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }  
+  ingress{ 
+    from_port = 6443
+    to_port   = 6443
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress{ 
+    from_port = 2379
+    to_port   = 2380
+    protocol  = "tcp"
+    cidr_blocks = [var.vpc_cidr]
+  }   
+  ingress{ 
+    from_port = 10250
+    to_port   = 10259
+    protocol  = "tcp"
+    cidr_blocks = [var.vpc_cidr]
+  }  
+  ingress{ 
+    from_port = 6783
+    to_port   = 6783
+    protocol  = "tcp"
+    cidr_blocks = [var.vpc_cidr]
+  }
+  egress = {
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 resource "aws_security_group" "alb" {

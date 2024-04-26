@@ -1,7 +1,7 @@
 resource "aws_instance" "Control_plane" {
   ami           = "ami-0d3d9b94632ba1e57"
-  instance_type = "t3.small"
-  vpc_security_group_ids = [aws_security_group.security_group_1.id]
+  instance_type = "t2.medium"
+  vpc_security_group_ids = [aws_security_group.control_plane_sg.id]
   # aws_security_group 사용
   user_data = <<-EOF
     #!/bin/bash
@@ -15,17 +15,19 @@ EOF
     Name = "control"
   }
 }
+
 /*
 Change the hostname
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 */
+
 resource "aws_instace" "Worker_node" {
-  ami           = 
-  instance_type = "t2.micro"
+  ami           = "ami-00554e6d90019a269"
+  instance_type = "t2.small"
   count         =  2
-  vpc_security_gorup_ids = 
+  vpc_security_gorup_ids = [aws_security_group.worker_node_sg.id]
   tags = "worker"
 }
 
