@@ -1,9 +1,3 @@
-
-
-
-# ENTRYPOINT FLASK_APP = /opt/app.py flask run --host=0.0.0.0
-
-
 FROM ubuntu:jammy-20240405
 #COPY /Users/mark-kim/Desktop/DevOps_Project/Python_Web_Application/market /opt/
 RUN apt-get update
@@ -19,6 +13,11 @@ RUN apt-get install -y locales \
 ENV LANG ko_KR.UTF-8
 ENV LANGUAGE ko_KR:ko
 ENV LC_ALL ko_KR.UTF-8
-#COPY /Users/mark-kim/Desktop/DevOps_Project/Python_Web_Application  /opt/
+ENV FLASK_APP=run.py
+COPY . /opt/
+EXPOSE 5000
+CMD ["python3", "/opt/run.py", "--host=0.0.0.0"]
+#CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
+#CMD ["flask", "run", "--host=0.0.0.0"]
 #ENTRYPOINT FLASK_APP = /opt/app.py flask run --host=0.0.0.0
 # 다른 필요한 설치 명령 추가

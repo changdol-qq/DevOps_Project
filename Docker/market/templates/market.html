@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block title %}
+이벤트 페이지
+{% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row justify-content-center" style="margin-top:20px;">
+       <!-- 이벤트 목록 -->
+       <div class="col-md-8">
+           <h2>이벤트 목록</h2>
+           <p>참여 버튼을 눌러 이벤트에 참석하실 수 있습니다.</p>
+           <br>
+           <table class="table table-hover table-dark">
+              <thead>
+                 <tr>
+                    <th scope="col">날짜</th>
+                    <th scope="col">이벤트 이름</th>
+                    <th scope="col">장소</th>
+                    <th scope="col">참석 인원/최대 인원</th>
+                    <th scope="col">비용</th>
+                    <th scope="col">상세정보 및 참석</th>
+                 </tr>
+              </thead>
+              <tbody>
+                 {% for item in items %}
+                 {% include 'includes/items_modals.html' %}
+                 <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.barcode }}</td>
+                    <td>{{ item.price }}$</td>
+                    <td>   <td> 
+                        <button class="btn btn-outline btn-info" data-toggle="modal" data-target="#Modal-MoreInfo-{{ item.id }}">상세 정보</button>
+                       <button class="btn btn-outline btn-success" data-toggle="modal" data-target="#Modal-PurchaseConfirm-{{ item.id }}">참석</button>
+                     </td>   
+                     </td>
+                 </tr>
+                 {% endfor %}
+              </tbody>
+           </table>
+       </div>
+       <!-- 참석 예정 이벤트 -->
+       <div class="col-md-4">
+           <h2>참석 예정 이벤트</h2>
+           <p>취소 버튼을 눌러 참석을 취소하실 수 있습니다.</p>
+           <br>
+           <table class="table table-hover table-dark">
+            <thead>
+               <tr>
+                  <th scope="col">날짜</th>
+                  <th scope="col">이벤트 이름</th>
+                  <th scope="col">장소</th>
+                  <th scope="col">참석 인원/최대 인원</th>
+                  <th scope="col">비용</th>
+                  <th scope="col">상세정보 및 참석</th>
+               </tr>
+            </thead>
+            <tbody>
+               {% for item in items %}
+               {% include 'includes/items_modals.html' %}
+               <tr>
+                  <td>{{ item.id }}</td>
+                  <td>{{ item.name }}</td>
+                 
+                  <td>   <td> 
+                      <button class="btn btn-outline btn-info" data-toggle="modal" data-target="#Modal-MoreInfo-{{ item.id }}">상세 정보</button>
+                     <button class="btn btn-outline btn-success" data-toggle="modal" data-target="#Modal-PurchaseConfirm-{{ item.id }}">참석</button>
+                   </td>   
+                   </td>
+               </tr>
+               {% endfor %}
+            </tbody>
+         </table>
+           <div class="row">
+              {% for owned_item in owned_items %}
+              {% include 'includes/owned_items_modals.html' %}
+                <div class="col-md-12">
+                    <div class="card text-center bg-dark">
+                         <div class="card-body">
+                             <h5 class="card-title">{{ owned_item.name }}</h5>
+                             <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#Modal-SellingConfirm-{{ owned_item.id }}">
+                                 참여 취소
+                             </button>
+                         </div>
+                     </div>
+                </div>
+              {% endfor %}
+           </div>
+       </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -2,3 +2,4 @@
 /terraform/*.tfstate
 /terraform/*.tfstate.backup
 /terraform/secret.tfvars
+/Python_Web_Application/run.py
