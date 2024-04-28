@@ -5,7 +5,7 @@
   </style>
  
  <!-- Purchase Confirm -->
- <div class="modal fade" id="Modal-SellingConfirm-{{ owned_item.id }}"
+ <div class="modal fade" id="Modal-CancelConfirm-{{ owned_event.date }}"
  tabindex="-1"
  aria-labelledby="exampleModalLabel" aria-hidden="true">
 <div class="modal-dialog">
@@ -13,7 +13,7 @@
   <div class="modal-header">
     <h5 class="modal-title" id="ModalLabel">
       <!-- -->
-      {{ owned_item.name }}
+      {{ owned_event.name }}
     </h5>
     <button type="button" class="close"
             data-dismiss="modal" aria-label="Close">
@@ -23,17 +23,17 @@
   <div class="modal-body">
     
     <form method="POST">
-      {{ selling_form.hidden_tag() }}
+      {{ cancel_form.hidden_tag() }}
 
       <h4 class="text-center">
-           {{ owned_item.name }} for {{ owned_item.price }} 이벤트 참석을 취소하시겠습니까?
+           {{ owned_event.name }} for {{ owned_event.price }} 이벤트 참석을 취소하시겠습니까?
       </h4>
       <h6 class="text-center">
           아래 버튼을 클릭하여 참석 취소
       </h6>
       <br>
-      <input id="sold_item" name="sold_item" type="hidden" value="{{owned_item.name}}">
-      {{ selling_form.submit(class="btn btn-outline-danger btn-block")}}
+      <input id="sold_event" name="sold_evnet" type="hidden" value="{{owned_event.name}}">
+      {{ cancel_form.submit(class="btn btn-outline-danger btn-block")}}
     </form>
   </div>
   <div class="modal-footer">

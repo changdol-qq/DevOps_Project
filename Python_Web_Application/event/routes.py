@@ -1,7 +1,7 @@
-from market import app, db
-from market.models import Item, User
+from event import app, db
+from event.models import Event, User
 from flask import render_template, redirect, url_for, flash, request
-from market.forms import RegisterFrom, LoginForm, PurchaseItemForm, SellItemForm
+from event.forms import RegisterFrom, LoginForm, BookEventForm, CancelEventForm
 from flask_login import login_user, logout_user, login_required, current_user
 
 @app.route('/')
@@ -12,32 +12,32 @@ def home_page():
 with app.app_context():
     db.create_all()
 
-@app.route('/market', methods=['GET', 'POST'])
+@app.route('/event', methods=['GET', 'POST'])
 @login_required
-def market_page():
-    purchase_form = PurchaseItemForm()
-    selling_form = SellItemForm()
+def event_page():
+    booking_form = BookEventForm()
+    cancel_form = CancelEventForm()
     if request.method == "POST":
-        #Purchase Item Logic
-        purchased_item = request.form.get('purchased_item')
-        p_item_object = Item.query.filter_by(name=purchased_item).first()
-        if p_item_object: 
-            p_item_object.buy(current_user)
-            flash(f"이벤트 참석이 등록되었습니다. {p_item_object.name} for {p_item_object.price}$", category='success')
+        #Book Event Logic
+        booked_item = request.form.get('booked_item')
+        p_event_object = Event.query.filter_by(name=booked_item).first()
+        if p_event_object: 
+            p_event_object.book(current_user)
+            flash(f"이벤트 참석이 등록되었습니다. {p_event_object.name} for {p_event_object.price}$", category='success')
             
         #Sell Item Logic
-        sold_item = request.form.get('sold_item')
-        s_item_object = Item.query.filter_by(name=sold_item).first()
-        if s_item_object:
-            #s_item_object.sell(current_user)
-            flash(f"이벤트 참석이 취소되었습니다. {s_item_object.name} back to market!", category='success')
+        cancel_item = request.form.get('cancel_item')
+        s_event_object = Event.query.filter_by(name=cancel_item).first()
+        if s_event_object:
+            s_event_object.cancel(current_user)
+            flash(f"이벤트 참석이 취소되었습니다. {s_event_object.name} back to event!", category='success')
 
-        return redirect(url_for('market_page'))
+        return redirect(url_for('event_page'))
     
     if request.method == "GET":
-        items = Item.query#.filter_by(owner=None)
-        owned_items = Item.query.filter_by(owner=current_user.id)
-        return render_template('market.html', items=items, purchase_form=purchase_form, owned_items=owned_items, selling_form = selling_form)
+        events = Event.query#.filter_by(owner=None)
+        owned_events = Event.query.filter_by(owner=current_user.id)
+        return render_template('event.html', events=events, booking_form=booking_form, owned_events=owned_events, cancel_form = cancel_form)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register_page():
@@ -50,7 +50,7 @@ def register_page():
         db.session.commit()
         login_user(user_to_create)
         flash(f"회원가입이 성공적으로 완료되었습니다. {user_to_create.username} 님 환영합니다.")
-        return redirect(url_for('market_page'))
+        return redirect(url_for('event_page'))
     if form.errors != {}: #If there are not errors from the validations
         for err_msg in form.errors.values():
             flash(f'유저를 생성하는데 에러가 발생했습니다.:{err_msg}', category='danger')
@@ -66,7 +66,7 @@ def login_page():
         ):
             login_user(attempted_user)
             flash(f'로그인에 성공하셨습니다. 환영합니다 {attempted_user.username}님.', category='success')
-            return redirect(url_for('market_page'))
+            return redirect(url_for('event_page'))
         else:
             flash('아이디와 비밀번호가 다릅니다. 다시 시도 해주세요', category= 'danger')
 

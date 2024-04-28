@@ -23,16 +23,16 @@
                  </tr>
               </thead>
               <tbody>
-                 {% for item in items %}
-                 {% include 'includes/items_modals.html' %}
+                 {% for event in events %}
+                 {% include 'includes/event_modals.html' %}
                  <tr>
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.barcode }}</td>
-                    <td>{{ item.price }}$</td>
+                    <td>{{ event.date }}</td>
+                    <td>{{ event.name }}</td>
+                    <td>{{ event.attend }}</td>
+                    <td>{{ event.price }}$</td>
                     <td>   <td> 
-                        <button class="btn btn-outline btn-info" data-toggle="modal" data-target="#Modal-MoreInfo-{{ item.id }}">상세 정보</button>
-                       <button class="btn btn-outline btn-success" data-toggle="modal" data-target="#Modal-PurchaseConfirm-{{ item.id }}">참석</button>
+                        <button class="btn btn-outline btn-info" data-toggle="modal" data-target="#Modal-MoreInfo-{{ event.date }}">상세 정보</button>
+                       <button class="btn btn-outline btn-success" data-toggle="modal" data-target="#Modal-PurchaseConfirm-{{ event.date }}">참석</button>
                      </td>   
                      </td>
                  </tr>
@@ -50,36 +50,32 @@
                <tr>
                   <th scope="col">날짜</th>
                   <th scope="col">이벤트 이름</th>
-                  <th scope="col">장소</th>
-                  <th scope="col">참석 인원/최대 인원</th>
-                  <th scope="col">비용</th>
                   <th scope="col">상세정보 및 참석</th>
                </tr>
             </thead>
             <tbody>
-               {% for item in items %}
-               {% include 'includes/items_modals.html' %}
+               {% for event in events %}
+               {% include 'includes/event_modals.html' %}
+              
                <tr>
-                  <td>{{ item.id }}</td>
-                  <td>{{ item.name }}</td>
-                 
-                  <td>   <td> 
-                      <button class="btn btn-outline btn-info" data-toggle="modal" data-target="#Modal-MoreInfo-{{ item.id }}">상세 정보</button>
-                     <button class="btn btn-outline btn-success" data-toggle="modal" data-target="#Modal-PurchaseConfirm-{{ item.id }}">참석</button>
-                   </td>   
-                   </td>
+                  <td>{{ event.date }}</td>
+                  <td>{{ event.name }}</td>
+                <td> 
+                     <button class="btn btn-outline btn-info" data-toggle="modal" data-target="#Modal-MoreInfo-{{ event.date }}">상세 정보</button>
+                     <button class="btn btn-outline btn-success" data-toggle="modal" data-target="#Modal-PurchaseConfirm-{{ event.date }}">참석</button>                         
+               </td>   
                </tr>
                {% endfor %}
             </tbody>
          </table>
            <div class="row">
-              {% for owned_item in owned_items %}
-              {% include 'includes/owned_items_modals.html' %}
+              {% for owned_event in owned_events %}
+              {% include 'includes/owned_events_modals.html' %}
                 <div class="col-md-12">
                     <div class="card text-center bg-dark">
                          <div class="card-body">
-                             <h5 class="card-title">{{ owned_item.name }}</h5>
-                             <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#Modal-SellingConfirm-{{ owned_item.id }}">
+                             <h5 class="card-title">{{ owned_event.name }}</h5>
+                             <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#Modal-CancelConfirm-{{ owned_event.date }}">
                                  참여 취소
                              </button>
                          </div>

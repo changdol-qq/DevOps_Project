@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm 
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import Length, EqualTo, Email, DataRequired, ValidationError
-from market.models import User
+from event.models import User
 
 
 class RegisterFrom(FlaskForm):
@@ -27,8 +27,8 @@ class LoginForm(FlaskForm):
     password = PasswordField(label='비밀번호:', validators=[DataRequired()])
     submit =SubmitField(label='로그인')
 
-class PurchaseItemForm(FlaskForm):
+class BookEventForm(FlaskForm):
     submit = SubmitField(label='이벤트 참석')
 
-class SellItemForm(FlaskForm):
+class CancelEventForm(FlaskForm):
     submit = SubmitField(label='참석 취소')

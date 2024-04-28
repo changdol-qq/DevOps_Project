@@ -5,7 +5,7 @@
   </style>
   
   <!-- More Info -->
-  <div class="modal fade" id="Modal-MoreInfo-{{ item.id }}"
+  <div class="modal fade" id="Modal-MoreInfo-{{ event.date }}"
        tabindex="-1"
        aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -13,7 +13,7 @@
         <div class="modal-header">
           <h5 class="modal-title" id="ModalLabel">
             <!-- -->
-            {{ item.name }}
+            {{ event.name }}
           </h5>
           <button type="button" class="close"
                   data-dismiss="modal" aria-label="Close">
@@ -21,7 +21,7 @@
           </button>
         </div>
         <div class="modal-body">
-          {{ item.description }}
+          {{ event.description }}
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary"
@@ -33,7 +33,7 @@
   </div>
   
   <!-- Purchase Confirm -->
-  <div class="modal fade" id="Modal-PurchaseConfirm-{{ item.id }}"
+  <div class="modal fade" id="Modal-PurchaseConfirm-{{ event.date }}"
        tabindex="-1"
        aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -41,7 +41,7 @@
         <div class="modal-header">
           <h5 class="modal-title" id="ModalLabel">
             <!-- -->
-            {{ item.name }}
+            {{ event.name }}
           </h5>
           <button type="button" class="close"
                   data-dismiss="modal" aria-label="Close">
@@ -51,17 +51,17 @@
         <div class="modal-body">
           
           <form method="POST">
-            {{ purchase_form.hidden_tag() }}
+            {{ booking_form.hidden_tag() }}
 
             <h4 class="text-center">
-                 {{ item.name }} for {{ item.price }} 이벤트에 참석하시겠습니까?
+                 {{ event.name }} for {{ event.price }} 이벤트에 참석하시겠습니까?
             </h4>
             <h6 class="text-center">
                 아래 버튼을 클릭하여 참석
             </h6>
             <br>
-            <input id="purchased_item" name="purchased_item" type="hidden" value="{{item.name}}">
-            {{ purchase_form.submit(class="btn btn-outline-success btn-block")}}
+            <input id="booked_item" name="booked_item" type="hidden" value="{{event.name}}">
+            {{ booking_form.submit(class="btn btn-outline-success btn-block")}}
           </form>
         </div>
         <div class="modal-footer">
