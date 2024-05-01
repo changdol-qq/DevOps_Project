@@ -1,0 +1,67 @@
+pipeline {
+    agent any
+
+    environment {
+        // 환경 변수 설정
+        DOCKER_IMAGE = 'your-ecr-repository-url/your-image-name'
+        ECR_REGISTRY = 'your-ecr-registry-url'
+        ECR_CREDENTIALS_ID = 'your-ecr-credentials-id'
+        KUBECONFIG = '/path/to/kubeconfig'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // GitHub에서 코드 체크아웃
+                checkout scm
+            }
+        }
+
+        stage('Build image') {
+            steps {
+                script {
+                    // Docker 이미지 빌드
+                    docker.build("$DOCKER_IMAGE:$BUILD_NUMBER")
+                }
+            }
+        }
+
+        stage('Push image to ECR') {
+            steps {
+                script {
+                    // ECR 로그인
+                    docker.withRegistry("https://${ECR_REGISTRY}", ECR_CREDENTIALS_ID) {
+                        // Docker 이미지 푸시
+                        docker.image("$DOCKER_IMAGE:$BUILD_NUMBER").push()
+                    }
+                    // 최신 태그도 푸시
+                    docker.image("$DOCKER_IMAGE:$BUILD_NUMBER").push('latest')
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    // Kubectl을 사용하여 EKS에 배포
+                    sh "kubectl --kubeconfig $KUBECONFIG apply -f k8s/"
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // 항상 실행되는 단계, 예를 들어 클린업 작업
+            cleanWs()
+        }
+        success {
+            // 파이프라인 성공 시 실행
+            echo 'Deployment succeeded!'
+        }
+        failure {
+            // 파이프라인 실패 시 실행
+            echo 'Deployment failed.'
+        }
+    }
+}
