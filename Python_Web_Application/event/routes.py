@@ -1,7 +1,7 @@
 from event import app, db
 from event.models import Event, User
 from flask import render_template, redirect, url_for, flash, request
-from event.forms import RegisterFrom, LoginForm, BookEventForm, CancelEventForm
+from event.forms import RegisterFrom, LoginForm, BookEventForm, CancelEventForm,CreateEventForm
 from flask_login import login_user, logout_user, login_required, current_user
 
 @app.route('/')
@@ -77,4 +77,11 @@ def logout_page():
     logout_user()
     flash("로그아웃 되었습니다.", category='info')
     return redirect(url_for("home_page"))
+
+@app.route('/create')
+@login_required
+def create_page():
+    form = CreateEventForm()
+    return render_template('create.html', form=form)
+
 

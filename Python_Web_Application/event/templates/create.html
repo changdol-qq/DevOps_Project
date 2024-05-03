@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}
+이벤트 생성 삭제
+{% endblock %}
+
+{% block content %}
+<body class = "text-center">
+    <div class="container">
+        <form method="POST" class="form-event" style="color:white">
+            {{ form.hidden_tag() }}
+            <img class="mb-4" src="https://res.cloudinary.com/jimshapedcoding/image/upload/v1597332609/android-icon-192x192_ove2a7.png" alt="">
+            <h1 class="h3 mb-3 font-weight-normal">
+                   이벤트를 생성해 주세요 
+            </h1>
+            <br>
+            {{ form.date.label() }}
+            {{ form.date(class="form-control", placeholder="날짜 (YYYY-MM-DD)") }}
+            
+            {{ form.name.label() }}
+            {{ form.name(class="form-control", placeholder="이벤트 이름") }}
+
+            {{ form.location.label() }}
+            {{ form.location(class="form-control", placeholder="위치") }}
+
+            {{ form.price.label() }}
+            {{ form.price(class="form-control", placeholder="가격") }}
+
+            {{ form.attend.label() }}
+            {{ form.attend(class="form-control", placeholder="바코드") }}
+
+            {{ form.description.label() }}
+            {{ form.description(class="form-control", placeholder="설명") }}
+
+            {{ form.owner.label() }}
+            {{ form.owner(class="form-control", placeholder="주최자 ID") }}
+
+            <br>
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" value="remember-me"> 기억하기
+                </label>
+            </div>
+            {{ form.submit(class="btn btn-lg btn-block btn-primary")}}
+        </form>
+    </div>
+</body>
+{% endblock %}

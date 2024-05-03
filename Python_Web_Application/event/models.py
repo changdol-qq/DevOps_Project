@@ -38,12 +38,12 @@ class User(db.Model, UserMixin):
     #     return item_obj in self.items
 
 class Event(db.Model):
-    date = db.Column(db.Integer(), primary_key=True) #id 
-    name = db.Column(db.String(length=30), nullable=False, unique=True) 
-    location = db.Column(db.String(length=30), nullable=False, unique=True) 
+    date = db.Column(db.Date(), nullable=False ) #id 
+    name = db.Column(db.String(length=30), nullable=False, unique=True, primary_key=True) 
+    location = db.Column(db.String(length=30), nullable=False) 
     price = db.Column(db.Integer(), nullable=False) 
-    attend = db.Column(db.String(length=12), nullable=False, unique=True) #barcode
-    description = db.Column(db.String(length=1024), nullable=False, unique=True) 
+    attend = db.Column(db.String(length=12), nullable=False ) #barcode
+    description = db.Column(db.String(length=1024), nullable=False) 
     owner = db.Column(db.Integer(), db.ForeignKey('user.id')) 
     def __repr__(self):
         return f'Event {self.name}'

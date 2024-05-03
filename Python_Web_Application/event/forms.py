@@ -1,7 +1,9 @@
 from flask_wtf import FlaskForm 
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import Length, EqualTo, Email, DataRequired, ValidationError
+from wtforms import StringField, PasswordField, SubmitField, IntegerField, DateField, TextAreaField
+from wtforms.validators import Length, EqualTo, Email, DataRequired, ValidationError, NumberRange
 from event.models import User
+from wtforms_alchemy import QuerySelectField
+
 
 
 class RegisterFrom(FlaskForm):
@@ -21,6 +23,18 @@ class RegisterFrom(FlaskForm):
     password2 = PasswordField(label='비밀번호 확인', validators=[EqualTo('password1'),DataRequired()])
     submit = SubmitField(label='계정 생성')
 
+def user_query():
+    return User.query
+
+class CreateEventForm(FlaskForm):
+    date = DateField('Event Date', validators=[DataRequired()])
+    name = StringField('Event Name', validators=[DataRequired(), Length(max=30)])
+    location = StringField('Location', validators=[DataRequired(), Length(max=30)])
+    price = IntegerField('Price', validators=[DataRequired(), NumberRange(min=0)])
+    attend = StringField('Barcode', validators=[DataRequired(), Length(max=12)])
+    description = TextAreaField('Description', validators=[DataRequired(), Length(max=1024)])
+    owner = QuerySelectField('Owner', query_factory=user_query, allow_blank=False, get_label='username')
+    submit = SubmitField('Create Event')
 
 class LoginForm(FlaskForm):
     username =StringField(label='아이디:', validators=[DataRequired()])
@@ -32,3 +46,4 @@ class BookEventForm(FlaskForm):
 
 class CancelEventForm(FlaskForm):
     submit = SubmitField(label='참석 취소')
+
