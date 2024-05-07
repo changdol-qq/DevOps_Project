@@ -25,20 +25,10 @@
             {{ form.price.label() }}
             {{ form.price(class="form-control", placeholder="가격") }}
 
-            {{ form.attend.label() }}
-            {{ form.attend(class="form-control", placeholder="바코드") }}
-
             {{ form.description.label() }}
             {{ form.description(class="form-control", placeholder="설명") }}
-
-            {{ form.owner.label() }}
-            {{ form.owner(class="form-control", placeholder="주최자 ID") }}
-
             <br>
-            <div class="checkbox mb-3">
-                <label>
-                    <input type="checkbox" value="remember-me"> 기억하기
-                </label>
+            <div class="checkbox mb-3">     
             </div>
             {{ form.submit(class="btn btn-lg btn-block btn-primary")}}
         </form>

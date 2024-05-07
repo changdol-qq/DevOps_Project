@@ -6,7 +6,7 @@ from wtforms_alchemy import QuerySelectField
 
 
 
-class RegisterFrom(FlaskForm):
+class RegisterForm(FlaskForm):
     def validate_username(self, username_to_ckeck):
         user = User.query.filter_by(username=username_to_ckeck.data).first()
         if user:
@@ -27,14 +27,14 @@ def user_query():
     return User.query
 
 class CreateEventForm(FlaskForm):
+    
     date = DateField('Event Date', validators=[DataRequired()])
     name = StringField('Event Name', validators=[DataRequired(), Length(max=30)])
     location = StringField('Location', validators=[DataRequired(), Length(max=30)])
     price = IntegerField('Price', validators=[DataRequired(), NumberRange(min=0)])
-    attend = StringField('Barcode', validators=[DataRequired(), Length(max=12)])
-    description = TextAreaField('Description', validators=[DataRequired(), Length(max=1024)])
-    owner = QuerySelectField('Owner', query_factory=user_query, allow_blank=False, get_label='username')
-    submit = SubmitField('Create Event')
+    attend = StringField('Barcode', validators=[Length(max=12)])
+    description = TextAreaField('Description', validators=[ Length(max=1024)])
+    submit = SubmitField(label='이벤트 등록')
 
 class LoginForm(FlaskForm):
     username =StringField(label='아이디:', validators=[DataRequired()])

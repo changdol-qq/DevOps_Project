@@ -42,9 +42,9 @@ class Event(db.Model):
     name = db.Column(db.String(length=30), nullable=False, unique=True, primary_key=True) 
     location = db.Column(db.String(length=30), nullable=False) 
     price = db.Column(db.Integer(), nullable=False) 
-    attend = db.Column(db.String(length=12), nullable=False ) #barcode
-    description = db.Column(db.String(length=1024), nullable=False) 
-    owner = db.Column(db.Integer(), db.ForeignKey('user.id')) 
+    attend = db.Column(db.String(length=12) ) #barcode
+    description = db.Column(db.String(length=1024)) 
+    owner = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False) 
     def __repr__(self):
         return f'Event {self.name}'
     

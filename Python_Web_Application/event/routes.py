@@ -1,7 +1,7 @@
 from event import app, db
 from event.models import Event, User
 from flask import render_template, redirect, url_for, flash, request
-from event.forms import RegisterFrom, LoginForm, BookEventForm, CancelEventForm,CreateEventForm
+from event.forms import RegisterForm, LoginForm, BookEventForm, CancelEventForm, CreateEventForm
 from flask_login import login_user, logout_user, login_required, current_user
 
 @app.route('/')
@@ -41,7 +41,7 @@ def event_page():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register_page():
-    form = RegisterFrom()
+    form = RegisterForm()
     if form.validate_on_submit():
         user_to_create = User(username=form.username.data,
                               email_address=form.email_address.data,
@@ -78,10 +78,22 @@ def logout_page():
     flash("로그아웃 되었습니다.", category='info')
     return redirect(url_for("home_page"))
 
-@app.route('/create')
+@app.route('/create', methods=['GET', 'POST'])
 @login_required
 def create_page():
     form = CreateEventForm()
+    if form.validate_on_submit():
+        event_to_create = Event(date = form.date.data, name = form.name.data,
+                                location = form.location.data, price = form.price.data,
+                                description = form.description.data,
+                                owner = current_user.id)
+        db.session.add(event_to_create)
+        db.session.commit()
+        flash(f"{event_to_create.name} 이벤트가 성공적으로 등록되었습니다.")
+        return redirect(url_for('event_page'))    
+    if form.errors != {}: #If there are not errors from the validations
+        for err_msg in form.errors.values():
+            flash(f'유저를 생성하는데 에러가 발생했습니다.:{err_msg}', category='danger')                    
     return render_template('create.html', form=form)
 
 
