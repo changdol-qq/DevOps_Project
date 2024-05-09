@@ -16,12 +16,12 @@ sudo systemctl enable jenkins
 sudo systemctl start jenkins
 
 
-#  after install you have to find out the password using this command "sudo cat /var/lib/jenkins/secrets/initialAdminPassword "
 
-# then install git
+
+#install git
 sudo apt-get install git -y
 
-#then install terraform
+#install terraform
 sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
 wget -O- https://apt.releases.hashicorp.com/gpg | \
 gpg --dearmor | \
@@ -35,9 +35,13 @@ sudo tee /etc/apt/sources.list.d/hashicorp.list
 sudo apt update
 sudo apt-get install terraform
 
-
-#finally install kubectl
+#install kubectl
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
-#sudo mkdir -p $HOME/bin && sudo cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+#install aws-cli 
+sudo apt-get install unzip -y
+sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+sudo unzip awscliv2.zip
+sudo ./aws/install
+sudo ./aws/install -i /usr/local/aws-cli -b /usr/local/bin
