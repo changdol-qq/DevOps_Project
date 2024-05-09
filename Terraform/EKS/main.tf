@@ -49,7 +49,7 @@ module "eks" {
       instance_type = ["t3.medium"]
     }
   }
-
+  enable_cluster_creator_admin_permissions = true
   tags = {
     Environment = "dev"
     Terraform   = "true"
