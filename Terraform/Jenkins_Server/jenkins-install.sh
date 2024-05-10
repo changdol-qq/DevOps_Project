@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# install jenki -yns
+# install jenkins
 sudo apt-get update
 
 sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
@@ -45,3 +45,13 @@ sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv
 sudo unzip awscliv2.zip
 sudo ./aws/install
 sudo ./aws/install -i /usr/local/aws-cli -b /usr/local/bin
+#install eksctl 
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
+
+#install helm
+curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+sudo apt-get install apt-transport-https --yes
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+sudo apt-get update
+sudo apt-get install helm
