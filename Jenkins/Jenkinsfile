@@ -1,41 +1,45 @@
 pipeline {
     agent any
+
     environment {
         // 환경 변수 설정
         DOCKER_IMAGE = 'your-ecr-repository-url/your-image-name'
-        ECR_REGISTRY = '533267155172.dkr.ecr.ap-northeast-2.amazonaws.com/web_app'
+        ECR_REGISTRY = 'your-ecr-registry-url'
         ECR_CREDENTIALS_ID = 'your-ecr-credentials-id'
         KUBECONFIG = '/path/to/kubeconfig'
+    }
+
+    triggers {
+        // GitHub 웹훅 트리거
+        githubPush()
     }
 
     stages {
         stage('Checkout') {
             steps {
                 // GitHub에서 코드 체크아웃
-                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/changdol-qq/DevOps_Project.git', credentialsId: 'git_hub_token']])
-
+                checkout scm
             }
         }
 
-        stage('Build image') {
+        stage('Build Docker Image') {
             steps {
                 script {
-                    // Docker 이미지 빌드
-                    docker.build("$DOCKER_IMAGE:$BUILD_NUMBER")
+                    // Docker 이미지 빌드 및 태그 지정
+                    docker.build("${DOCKER_IMAGE}:${env.BUILD_NUMBER}")
                 }
             }
         }
 
-        stage('Push image to ECR') {
+        stage('Push Image to ECR') {
             steps {
                 script {
-                    // ECR 로그인
+                    // ECR 로그인 및 Docker 이미지 푸시
                     docker.withRegistry("https://${ECR_REGISTRY}", ECR_CREDENTIALS_ID) {
-                        // Docker 이미지 푸시
-                        docker.image("$DOCKER_IMAGE:$BUILD_NUMBER").push()
+                        docker.image("${DOCKER_IMAGE}:${env.BUILD_NUMBER}").push()
+                        // 최신 태그도 푸시
+                        docker.image("${DOCKER_IMAGE}").tag("${env.BUILD_NUMBER}", 'latest').push('latest')
                     }
-                    // 최신 태그도 푸시
-                    docker.image("$DOCKER_IMAGE:$BUILD_NUMBER").push('latest')
                 }
             }
         }
@@ -44,7 +48,7 @@ pipeline {
             steps {
                 script {
                     // Kubectl을 사용하여 EKS에 배포
-                    sh "kubectl --kubeconfig $KUBECONFIG apply -f k8s/"
+                    sh "kubectl --kubeconfig ${KUBECONFIG} apply -f k8s/"
                 }
             }
         }
