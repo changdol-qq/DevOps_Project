@@ -1,5 +1,4 @@
 FROM ubuntu:jammy-20240405
-#COPY /Users/mark-kim/Desktop/DevOps_Project/Python_Web_Application/market /opt/
 RUN apt-get update
 RUN apt-get install python3 python3-pip -y
 RUN pip install Flask  Flask-Bcrypt Flask-Login Flask-WTF WTForms  Flask-SQLAlchemy psycopg2-binary
