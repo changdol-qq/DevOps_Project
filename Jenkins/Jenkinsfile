@@ -4,7 +4,7 @@ pipeline {
     environment {
         // 환경 변수 설정
         DOCKER_IMAGE = 'your-ecr-repository-url/your-image-name'
-        ECR_REGISTRY = 'your-ecr-registry-url'
+        ECR_REGISTRY = '533267155172.dkr.ecr.ap-northeast-2.amazonaws.com/web_app'
         ECR_CREDENTIALS_ID = 'your-ecr-credentials-id'
         KUBECONFIG = '/path/to/kubeconfig'
     }
@@ -13,7 +13,8 @@ pipeline {
         stage('Checkout') {
             steps {
                 // GitHub에서 코드 체크아웃
-                checkout scm
+                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/changdol-qq/DevOps_Project.git', credentialsId: 'git_hub_token']])
+
             }
         }
 
