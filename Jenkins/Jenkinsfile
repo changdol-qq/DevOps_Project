@@ -3,22 +3,17 @@ pipeline {
 
     environment {
         // 환경 변수 설정
-        DOCKER_IMAGE = 'your-ecr-repository-url/your-image-name'
-        ECR_REGISTRY = 'your-ecr-registry-url'
-        ECR_CREDENTIALS_ID = 'your-ecr-credentials-id'
+        DOCKER_IMAGE = '533267155172.dkr.ecr.ap-northeast-2.amazonaws.com/web_app'
+        ECR_REGISTRY = '533267155172.dkr.ecr.ap-northeast-2.amazonaws.com'
+        ECR_CREDENTIALS_ID = credentials('AWS_CREDENTIAL')
         KUBECONFIG = '/path/to/kubeconfig'
-    }
-
-    triggers {
-        // GitHub 웹훅 트리거
-        githubPush()
     }
 
     stages {
         stage('Checkout') {
             steps {
                 // GitHub에서 코드 체크아웃
-                checkout scm
+                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'git_hub', url: 'https://github.com/changdol-qq/DevOps_Project.git']])
             }
         }
 
@@ -44,14 +39,14 @@ pipeline {
             }
         }
 
-        stage('Deploy to Kubernetes') {
-            steps {
-                script {
-                    // Kubectl을 사용하여 EKS에 배포
-                    sh "kubectl --kubeconfig ${KUBECONFIG} apply -f k8s/"
-                }
-            }
-        }
+        // stage('Deploy to Kubernetes') {
+        //     steps {
+        //         script {
+        //             // Kubectl을 사용하여 EKS에 배포
+        //             sh "kubectl --kubeconfig ${KUBECONFIG} apply -f k8s/"
+        //         }
+        //     }
+        // }
     }
 
     post {
