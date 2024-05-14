@@ -59,10 +59,10 @@ pipeline {
                 }
             }
         }
-        stage('Deploying Nginx Application') {
+        stage('Deploying Application') {
             steps{
                 script{
-                    dir('Terraform/EKS/ConfigurationFiles') {
+                    dir('Kubernetes') {
                         sh 'aws eks update-kubeconfig --name my-eks-cluster'
                         sh 'kubectl apply -f deployment.yaml'
                         sh 'kubectl apply -f service.yaml'

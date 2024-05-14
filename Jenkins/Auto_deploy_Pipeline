@@ -1,0 +1,52 @@
+pipeline {
+    agent any
+    environment {
+        DOCKER_IMAGE = '533267155172.dkr.ecr.ap-northeast-2.amazonaws.com/web_app'
+        ECR_CREDENTIALS_ID = credentials('AWS_CREDENTIAL')
+        ECR_REGISTRY = '533267155172.dkr.ecr.ap-northeast-2.amazonaws.com'
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        AWS_DEFAULT_REGION = "ap-northeast-2"
+    }
+    stages {
+        stage('Checkout SCM'){
+            steps{
+                script{
+                    checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/changdol-qq/DevOps_Project.git', credentialsId: 'git_hub']])
+                }
+            }
+        }
+    stage('Build Docker Image') {
+            steps {
+                script {
+                    dir('Python_Web_Application') {  // 'dir' 블록을 사용해 올바른 디렉토리로 이동
+                        // Docker 이미지를 빌드하는 명령어, 올바르게 'build'로 수정
+                        docker.build("${DOCKER_IMAGE}:${env.BUILD_NUMBER}")
+ 
+                    }
+                }
+            }
+        }
+    stage('Push Image to ECR') {
+            steps {
+                script {
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_CREDENTIAL']]) {
+                        // AWS ECR 로그인
+                        sh "aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${ECR_REGISTRY}"
+                        // Docker 이미지를 ECR에 푸시
+                        sh "docker push ${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
+                    }
+                }
+            }
+        }
+        stage('Initializing Terraform'){
+            steps{
+                script{
+                    
+                        sh "kubectl set image deployment/deployment-app web-app=${DOCKER_IMAGE}:${env.BUILD_NUMBER} --record -n app-ns"
+                    }
+                }
+            }
+        }
+    }
+
