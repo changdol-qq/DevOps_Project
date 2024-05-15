@@ -22,7 +22,7 @@
   </div>
   <div class="modal-body">
     
-    <form method="POST">
+    <!--<form method="POST">
       {{ cancel_form.hidden_tag() }}
 
       <h4 class="text-center">
@@ -34,7 +34,21 @@
       <br>
       <input id="sold_event" name="sold_evnet" type="hidden" value="{{owned_event.name}}">
       {{ cancel_form.submit(class="btn btn-outline-danger btn-block")}}
+    </form>-->
+    <form method="POST" action="{{ url_for('event_page', event_id=owned_event.id) }}">
+      {{ cancel_form.hidden_tag() }}
+      <h4 class="text-center">
+           {{ owned_event.name }} for {{ owned_event.price }} 이벤트 참석을 취소하시겠습니까?
+      </h4>
+      <h6 class="text-center">
+          아래 버튼을 클릭하여 참석 취소
+      </h6>
+      <br>
+      <input id="sold_event" name="sold_event" type="hidden" value="{{owned_event.name}}">
+      {{ cancel_form.submit(class="btn btn-outline-danger btn-block")}}
     </form>
+    
+    
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary"

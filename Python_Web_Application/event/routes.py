@@ -35,9 +35,21 @@ def event_page():
         return redirect(url_for('event_page'))
     
     if request.method == "GET":
-        events = Event.query#.filter_by(owner=None)
+        events = Event.query.all()
         owned_events = Event.query.filter_by(owner=current_user.id)
         return render_template('event.html', events=events, booking_form=booking_form, owned_events=owned_events, cancel_form = cancel_form)
+
+@app.route('/delete_event/<int:event_id>', methods=['POST'])
+@login_required
+def delete_event(event_id):
+    event = Event.query.get_or_404(event_id)
+    if event.owner_user == current_user:
+        db.session.delete(event)
+        db.session.commit()
+        flash('Event deleted successfully', 'success')
+    else:
+        flash('You do not have permission to delete this event', 'danger')
+    return redirect(url_for('event_page'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register_page():
@@ -72,11 +84,13 @@ def login_page():
 
     return render_template('login.html', form=form)
 
+
 @app.route('/logout')
 def logout_page():
     logout_user()
     flash("로그아웃 되었습니다.", category='info')
     return redirect(url_for("home_page"))
+
 
 @app.route('/create', methods=['GET', 'POST'])
 @login_required

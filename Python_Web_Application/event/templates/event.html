@@ -6,84 +6,69 @@
 
 <div class="container-fluid">
     <div class="row justify-content-center" style="margin-top:20px;">
-       <!-- 이벤트 목록 -->
-       <div class="col-md-8">
-           <h2>이벤트 목록</h2>
-           <p>참여 버튼을 눌러 이벤트에 참석하실 수 있습니다.</p>
-           <br>
-           <table class="table table-hover table-dark">
-              <thead>
-                 <tr>
-                    <th scope="col">날짜</th>
-                    <th scope="col">이벤트 이름</th>
-                    <th scope="col">장소</th>
-                    <th scope="col">참석 인원/최대 인원</th>
-                    <th scope="col">비용</th>
-                    <th scope="col">상세정보 및 참석</th>
-                 </tr>
-              </thead>
-              <tbody>
-                 {% for event in events %}
-                 {% include 'includes/event_modals.html' %}
-                 <tr>
-                    <td>{{ event.date }}</td>
-                    <td>{{ event.name }}</td>
-                    <td>{{ event.attend }}</td>
-                    <td>{{ event.price }}$</td>
-                    <td>   <td> 
-                        <button class="btn btn-outline btn-info" data-toggle="modal" data-target="#Modal-MoreInfo-{{ event.date }}">상세 정보</button>
-                       <button class="btn btn-outline btn-success" data-toggle="modal" data-target="#Modal-PurchaseConfirm-{{ event.date }}">참석</button>
-                     </td>   
-                     </td>
-                 </tr>
-                 {% endfor %}
-              </tbody>
-           </table>
-       </div>
-       <!-- 참석 예정 이벤트 -->
-       <div class="col-md-4">
-           <h2>참석 예정 이벤트</h2>
-           <p>취소 버튼을 눌러 참석을 취소하실 수 있습니다.</p>
-           <br>
-           <table class="table table-hover table-dark">
-            <thead>
-               <tr>
-                  <th scope="col">날짜</th>
-                  <th scope="col">이벤트 이름</th>
-                  <th scope="col">상세정보 및 참석</th>
-               </tr>
-            </thead>
-            <tbody>
-               {% for event in events %}
-               {% include 'includes/event_modals.html' %}
-              
-               <tr>
-                  <td>{{ event.date }}</td>
-                  <td>{{ event.name }}</td>
-                <td> 
-                     <button class="btn btn-outline btn-info" data-toggle="modal" data-target="#Modal-MoreInfo-{{ event.date }}">상세 정보</button>
-                     <button class="btn btn-outline btn-success" data-toggle="modal" data-target="#Modal-PurchaseConfirm-{{ event.date }}">참석</button>                         
-               </td>   
-               </tr>
-               {% endfor %}
-            </tbody>
-         </table>
-           <div class="row">
-              {% for owned_event in owned_events %}
-              {% include 'includes/owned_events_modals.html' %}
-                <div class="col-md-12">
-                    <div class="card text-center bg-dark">
-                         <div class="card-body">
-                             <h5 class="card-title">{{ owned_event.name }}</h5>
-                             <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#Modal-CancelConfirm-{{ owned_event.date }}">
-                                 참여 취소
-                             </button>
-                         </div>
-                     </div>
-                </div>
-              {% endfor %}
-           </div>
-       </div>
+        <!-- 이벤트 목록 -->
+        <div class="col-md-8">
+            <h2>이벤트 목록</h2>
+            <p>참여 버튼을 눌러 이벤트에 참석하실 수 있습니다.</p>
+            <br>
+            <table class="table table-hover table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">날짜</th>
+                        <th scope="col">이벤트 이름</th>
+                        <th scope="col">장소</th>
+                        <th scope="col">참석 인원/최대 인원</th>
+                        <th scope="col">비용</th>
+                        <th scope="col">상세정보 및 참석</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in events %}
+                    {% include 'includes/event_modals.html' %}
+                    <tr>
+                        <td>{{ event.date }}</td>
+                        <td>{{ event.name }}</td>
+                        <td>{{ event.attend }}</td>
+                        <td>{{ event.price }}$</td>
+                        <td>
+                            <button class="btn btn-outline btn-info" data-toggle="modal" data-target="#Modal-MoreInfo-{{ event.id }}">상세 정보</button>
+                            <button class="btn btn-outline btn-success" data-toggle="modal" data-target="#Modal-PurchaseConfirm-{{ event.id }}">참석</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- 참석 예정 이벤트 -->
+        <div class="col-md-4">
+            <h2>참석 예정 이벤트</h2>
+            <p>취소 버튼을 눌러 참석을 취소하실 수 있습니다.</p>
+            <br>
+            <div class="row">
+                <table class="table table-hover table-dark">
+                    <thead>
+                        <tr>
+                            <th scope="col">날짜</th>
+                            <th scope="col">이벤트 이름</th>
+                            <th scope="col">상세정보 및 참석</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for owned_event in owned_events %}
+                        {% include 'includes/owned_events_modals.html' %}
+                        <tr>
+                            <td>{{ owned_event.date }}</td>
+                            <td>{{ owned_event.name }}</td>
+                            <td>
+                                <button class="btn btn-outline btn-info" data-toggle="modal" data-target="#Modal-MoreInfo-{{ owned_event.id }}">상세 정보</button>
+                                <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#Modal-CancelConfirm-{{ owned_event.id }}">참여 취소</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
