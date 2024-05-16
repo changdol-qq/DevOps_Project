@@ -5,7 +5,7 @@
   </style>
   
   <!-- More Info -->
-  <div class="modal fade" id="Modal-MoreInfo-{{ event.date }}"
+  <div class="modal fade" id="Modal-MoreInfo-{{ event.id }}"
        tabindex="-1"
        aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -21,11 +21,14 @@
           </button>
         </div>
         <div class="modal-body">
-          {{ event.description }}
+          <div> 날짜: {{ event.date }}        </div>
+          <div> 장소: {{ event.location }}    </div>
+          <div> 비용: {{ event.price }}       </div>
+          <div> 설명: {{ event.description }} </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary"
-                  data-dismiss="modal">Close
+                  data-dismiss="modal">닫기
           </button>
         </div>
       </div>
@@ -33,14 +36,13 @@
   </div>
   
   <!-- Purchase Confirm -->
-  <div class="modal fade" id="Modal-PurchaseConfirm-{{ event.date }}"
+  <div class="modal fade" id="Modal-PurchaseConfirm-{{ event.id }}"
        tabindex="-1"
        aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="ModalLabel">
-            <!-- -->
             {{ event.name }}
           </h5>
           <button type="button" class="close"
@@ -49,24 +51,22 @@
           </button>
         </div>
         <div class="modal-body">
-          
-          <form method="POST">
+          <form method="POST" action="{{ url_for('event_page') }}">
+            <input type="hidden" name="booked_item" value="{{ event.name }}">
             {{ booking_form.hidden_tag() }}
-
             <h4 class="text-center">
-                 {{ event.name }} for {{ event.price }} 이벤트에 참석하시겠습니까?
+                 {{ event.name }} 이벤트에 참석하시겠습니까?
             </h4>
             <h6 class="text-center">
                 아래 버튼을 클릭하여 참석
             </h6>
             <br>
-            <input id="booked_item" name="booked_item" type="hidden" value="{{event.name}}">
-            {{ booking_form.submit(class="btn btn-outline-success btn-block")}}
+            <button type="submit" class="btn btn-outline-success btn-block">참석</button>
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary"
-                  data-dismiss="modal">Close
+                  data-dismiss="modal">닫기
           </button>
         </div>
       </div>

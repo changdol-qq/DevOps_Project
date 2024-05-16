@@ -23,33 +23,30 @@ def event_page():
         p_event_object = Event.query.filter_by(name=booked_item).first()
         if p_event_object: 
             p_event_object.book(current_user)
-            flash(f"이벤트 참석이 등록되었습니다. {p_event_object.name} for {p_event_object.price}$", category='success')
+            if p_event_object:
+                p_event_object.book(current_user)
+                db.session.commit()  # 데이터베이스에 변경 사항을 저장합니다.
+                flash(f"이벤트 참석이 등록되었습니다. {p_event_object.name} for {p_event_object.price}$", category='success')
+            
+
             
         #Sell Item Logic
         cancel_item = request.form.get('cancel_item')
         s_event_object = Event.query.filter_by(name=cancel_item).first()
         if s_event_object:
             s_event_object.cancel(current_user)
-            flash(f"이벤트 참석이 취소되었습니다. {s_event_object.name} back to event!", category='success')
+            if s_event_object:
+                s_event_object.cancel(current_user)
+                db.session.commit()  # 데이터베이스에 변경 사항을 저장합니다.
+                flash(f"이벤트 참석이 취소되었습니다. {s_event_object.name} back to event!", category='success')
 
         return redirect(url_for('event_page'))
     
     if request.method == "GET":
         events = Event.query.all()
-        owned_events = Event.query.filter_by(owner=current_user.id)
+        owned_events = [event for event in events if current_user in event.users]
         return render_template('event.html', events=events, booking_form=booking_form, owned_events=owned_events, cancel_form = cancel_form)
 
-@app.route('/delete_event/<int:event_id>', methods=['POST'])
-@login_required
-def delete_event(event_id):
-    event = Event.query.get_or_404(event_id)
-    if event.owner_user == current_user:
-        db.session.delete(event)
-        db.session.commit()
-        flash('Event deleted successfully', 'success')
-    else:
-        flash('You do not have permission to delete this event', 'danger')
-    return redirect(url_for('event_page'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register_page():
@@ -100,7 +97,7 @@ def create_page():
         event_to_create = Event(date = form.date.data, name = form.name.data,
                                 location = form.location.data, price = form.price.data,
                                 description = form.description.data,
-                                owner = current_user.id)
+                                owner_id = current_user.id)
         db.session.add(event_to_create)
         db.session.commit()
         flash(f"{event_to_create.name} 이벤트가 성공적으로 등록되었습니다.")

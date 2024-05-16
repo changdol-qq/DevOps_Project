@@ -28,11 +28,17 @@
                     <tr>
                         <td>{{ event.date }}</td>
                         <td>{{ event.name }}</td>
+                        <td>{{ event.location }}</td>
                         <td>{{ event.attend }}</td>
                         <td>{{ event.price }}$</td>
                         <td>
-                            <button class="btn btn-outline btn-info" data-toggle="modal" data-target="#Modal-MoreInfo-{{ event.id }}">상세 정보</button>
-                            <button class="btn btn-outline btn-success" data-toggle="modal" data-target="#Modal-PurchaseConfirm-{{ event.id }}">참석</button>
+                            <!-- 사용자 참석 여부에 따라 버튼을 조건부로 렌더링 -->
+                            {% if current_user in event.users %}
+                            <span class="badge badge-success" style=" font-size: 1.5em;">참석됨</span>
+                            {% else %}
+                                <button class="btn btn-outline btn-info" data-toggle="modal" data-target="#Modal-MoreInfo-{{ event.id }}">상세 정보</button>
+                                <button class="btn btn-outline btn-success" data-toggle="modal" data-target="#Modal-PurchaseConfirm-{{ event.id }}">참석</button>
+                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}

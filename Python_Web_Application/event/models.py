@@ -18,9 +18,9 @@ class User(db.Model, UserMixin):
     username        = db.Column(db.String(length=30), nullable=False, unique=True)
     email_address   = db.Column(db.String(length=50), nullable=False, unique=True)
     password_hash   = db.Column(db.String(length=60), nullable=False)
-    count           = db.Column(db.Integer(), nullable=False, default=0) #budget
+    count           = db.Column(db.Integer(), nullable=False, default=0) 
     events          = db.relationship('Event', secondary=user_event, back_populates='users')
-    owned_events    = db.relationship('Event', backref='owner_user, lazy=True')
+    owned_events    = db.relationship('Event', backref='owner_user', lazy=True)
     @property
     def prettier_count(self):
         if len(str(self.count)) >= 4:
@@ -29,7 +29,10 @@ class User(db.Model, UserMixin):
             return f"{self.count}"
     @property 
     def password(self):
-        return self.password
+        raise AttributeError('Password is not a readable attribute.')
+    # @property 
+    # def password(self):
+    #     return self.password
     
     @password.setter
     def password(self, plain_text_password):
@@ -40,26 +43,28 @@ class User(db.Model, UserMixin):
 
 #이벤트 테이블    
 class Event(db.Model):
-    id          = db.Column(db.Integer, primary_key=True)
+    id          = db.Column(db.Integer, primary_key=True, autoincrement=True)
     date        = db.Column(db.Date(), nullable=False ) 
-    name        = db.Column(db.String(length=30), nullable=False, unique=True, primary_key=True) 
+    name        = db.Column(db.String(length=30), nullable=False, unique=True) 
     location    = db.Column(db.String(length=30), nullable=False) 
     price       = db.Column(db.Integer(), nullable=False) 
     attend      = db.Column(db.String(length=12) )
     description = db.Column(db.String(length=1024)) 
-    owner    = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False) 
+    owner_id    = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False) 
     users       = db.relationship('User', secondary=user_event, back_populates='events')
     def __repr__(self):
         return f'Event {self.name}'
     
     def book(self, user):
-        self.owner_id = user.id
-        user.count += 1
-        db.session.commit()
+        if user not in self.users:
+            self.users.append(user)
+            user.count += 1
+            db.session.commit()
+
 
     def cancel(self, user):
-        if self.owner_id == user.id:
-            self.owner_id = None
+        if user in self.users:
+            self.users.remove(user)
             user.count -= 1
             db.session.commit()
         
