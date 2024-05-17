@@ -39,7 +39,7 @@ pipeline {
                 }
             }
         }
-        stage('Initializing Terraform'){
+        stage('Deploy pod'){
             steps{
                 script{
                     
