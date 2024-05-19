@@ -1,5 +1,4 @@
 import pytest
-import routes 
 from event import app
 from flask import url_for
 

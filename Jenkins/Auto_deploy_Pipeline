@@ -8,6 +8,7 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
         AWS_DEFAULT_REGION = "ap-northeast-2"
     }
+    //체크 아웃
     stages {
         stage('Checkout SCM'){
             steps{
@@ -16,33 +17,32 @@ pipeline {
                 }
             }
         }
+    // 도커 이미지  생성 
     stage('Build Docker Image') {
             steps {
                 script {
-                    dir('Python_Web_Application') {  // 'dir' 블록을 사용해 올바른 디렉토리로 이동
-                        // Docker 이미지를 빌드하는 명령어, 올바르게 'build'로 수정
+                    dir('Python_Web_Application') {  
                         docker.build("${DOCKER_IMAGE}:${env.BUILD_NUMBER}")
  
                     }
                 }
             }
         }
+    // ECR 로 이미지 푸쉬 
     stage('Push Image to ECR') {
             steps {
                 script {
                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_CREDENTIAL']]) {
-                        // AWS ECR 로그인
                         sh "aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${ECR_REGISTRY}"
-                        // Docker 이미지를 ECR에 푸시
                         sh "docker push ${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
                     }
                 }
             }
         }
-        stage('Deploy pod'){
-            steps{
-                script{
-                    
+    // 파드 배포 
+    stage('Deploy pod'){
+        steps{
+            script{
                         sh "kubectl set image deployment/deployment-app web-app=${DOCKER_IMAGE}:${env.BUILD_NUMBER} --record -n app-ns"
                     }
                 }
