@@ -1,36 +1,35 @@
+from flask import render_template, redirect, url_for, flash, request
+from flask_login import login_user, logout_user, login_required, current_user
 from event import app, db
 from event.models import Event, User
-from flask import render_template, redirect, url_for, flash, request
 from event.forms import RegisterForm, LoginForm, BookEventForm, CancelEventForm, CreateEventForm
-from flask_login import login_user, logout_user, login_required, current_user
 
+# 데이터베이스 초기화
+with app.app_context():
+    db.create_all()
+
+# 홈 페이지 라우트 
 @app.route('/')
 @app.route('/home/')
 def home_page():
     return render_template('home.html')
 
-with app.app_context():
-    db.create_all()
-
+# 이벤트 페이지 라우트
 @app.route('/event', methods=['GET', 'POST'])
 @login_required
 def event_page():
     booking_form = BookEventForm()
     cancel_form = CancelEventForm()
+
     if request.method == "POST":
-        #Book Event Logic
-        booked_item = request.form.get('booked_item')
-        p_event_object = Event.query.filter_by(name=booked_item).first()
+        booked_item = request.form.get('booked_item') #event 모달에서 입력 받음
+        p_event_object = Event.query.filter_by(name=booked_item).first() 
         if p_event_object: 
             p_event_object.book(current_user)
             if p_event_object:
                 p_event_object.book(current_user)
                 db.session.commit()  # 데이터베이스에 변경 사항을 저장합니다.
                 flash(f"이벤트 참석이 등록되었습니다. {p_event_object.name} for {p_event_object.price}$", category='success')
-            
-
-            
-        #Sell Item Logic
         cancel_item = request.form.get('cancel_item')
         s_event_object = Event.query.filter_by(name=cancel_item).first()
         if s_event_object:
@@ -81,13 +80,11 @@ def login_page():
 
     return render_template('login.html', form=form)
 
-
 @app.route('/logout')
 def logout_page():
     logout_user()
     flash("로그아웃 되었습니다.", category='info')
     return redirect(url_for("home_page"))
-
 
 @app.route('/create', methods=['GET', 'POST'])
 @login_required
