@@ -20,7 +20,7 @@ spec:
         app.kubernetes.io/name: web-app
     spec:
       containers:
-      - image: 533267155172.dkr.ecr.ap-northeast-2.amazonaws.com/web_app:5
+      - image: 533267155172.dkr.ecr.ap-northeast-2.amazonaws.com/web_app:latest
         imagePullPolicy: Always
         name: web-app
         ports:
