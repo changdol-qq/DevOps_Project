@@ -1,8 +1,10 @@
-from flask import render_template, redirect, url_for, flash, request, current_app as app
+from flask import render_template, redirect, url_for, flash, request, current_app as app, Blueprint
 from flask_login import login_user, logout_user, login_required, current_user
 from event import db
 from event.models import Event, User
 from event.forms import RegisterForm, LoginForm, BookEventForm, CancelEventForm, CreateEventForm
+
+
 
 # 데이터베이스 초기화
 with app.app_context():

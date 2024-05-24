@@ -28,6 +28,8 @@ def create_app(database_uri='sqlite:///market.db'):
 
     return app
 
+
+
 #라우트 모듈 임포트 
 # from event import routes
 
