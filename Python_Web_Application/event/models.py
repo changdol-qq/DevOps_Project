@@ -4,8 +4,7 @@ from event import db, login_manager, bcrypt
 # 사용자 로더 함수 설정
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
-
+    return db.session.get(User, int(user_id))
 # 다대다 관계를 위한 중간 테이블
 user_event = db.Table(
     'user_event',

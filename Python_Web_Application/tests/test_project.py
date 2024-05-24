@@ -1,9 +1,9 @@
 from flask import url_for
 from event.models import User
 from event.forms import RegisterForm
-# def test_home(client):
-#     response = client.get("/")
-#     assert response.status_code ==200
+def test_home(client):
+    response = client.get("/")
+    assert response.status_code ==200
 
 # def test_register(client):
 #     response = client.get("/register")
