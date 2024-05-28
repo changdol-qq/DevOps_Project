@@ -1,6 +1,6 @@
 .run.py
 .__pycache__
-.tests/.__pycache__
-.tests/.pytest_cache
-.event/__pycache__
-.instance
+./tests/.__pycache__
+./tests/.pytest_cache
+./event/__pycache__
+./instance
