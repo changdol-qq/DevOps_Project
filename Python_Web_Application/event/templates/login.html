@@ -8,7 +8,7 @@
     <div class="container">
         <form method="POST" class="form-signin" style="color:white">
             {{ form.hidden_tag() }}
-            <img class="mb-4" src="https://res.cloudinary.com/jimshapedcoding/image/upload/v1597332609/android-icon-192x192_ove2a7.png" alt="">
+            <img class="mb-4" src="{{ url_for('static', filename='my_image.png') }}" alt="" style="margin-top: 20px;"> <!-- 로컬 이미지 파일 경로 -->
             <h1 class="h3 mb-3 font-weight-normal">
                 로그인을 해주세요 
             </h1>
