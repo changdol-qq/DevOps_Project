@@ -16,7 +16,4 @@ ENV FLASK_APP=run.py
 COPY . /opt/
 EXPOSE 5000
 CMD ["python3", "/opt/run.py", "--host=0.0.0.0"]
-#CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
-#CMD ["flask", "run", "--host=0.0.0.0"]
-#ENTRYPOINT FLASK_APP = /opt/app.py flask run --host=0.0.0.0
-# 다른 필요한 설치 명령 추가
+

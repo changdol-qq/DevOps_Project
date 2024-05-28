@@ -1,6 +1,8 @@
 from event.models import User
 
 
+
+
 def test_app(client, app):
     # 홈 페이지 테스트
     response = client.get("/")
