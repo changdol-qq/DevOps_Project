@@ -4,3 +4,6 @@
 /tests/.pytest_cache
 /event/__pycache__
 instance
+/event/.DS_Store
+/event/static/.DS_Store
+/.DS_Store
