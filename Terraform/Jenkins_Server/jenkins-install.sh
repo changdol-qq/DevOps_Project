@@ -32,7 +32,7 @@ install_terraform() {
     gpg --no-default-keyring --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg --fingerprint
     echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
     sudo apt-get update
-    sudo apt-get install -y terraform
+    sudo apt-get install -y terraform python3-pip python3-venv # pytest 작동
     log "Terraform installation completed."
 }
 

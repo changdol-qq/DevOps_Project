@@ -7,13 +7,58 @@ pipeline {
         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
         AWS_DEFAULT_REGION = "ap-northeast-2"
+         // Ensure the .local/bin directory is in the PATH for global access
+        PATH = "${env.PATH}:/var/lib/jenkins/.local/bin"
     }
     //체크 아웃
     stages {
         stage('Checkout SCM'){
             steps{
                 script{
-                    checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/changdol-qq/DevOps_Project.git', credentialsId: 'git_hub']])
+                    checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/changdol-qq/DevOps_Project.git', credentialsId: 'git_hub_token']])
+                }
+            }
+        }
+        stage('Setup Virtual Environment') {
+            steps {
+                script {
+                    // Create a virtual environment
+                    sh 'sudo python3 -m venv venv'
+                    // Activate the virtual environment and upgrade pip
+                    sh '''
+                    . venv/bin/activate
+                    sudo pip install --upgrade pip
+                    '''
+                }
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    // Activate the virtual environment and install dependencies
+                    sh '''
+                    . venv/bin/activate
+                    sudo pip install --ignore-installed blinker
+                    sudo pip install pytest Flask Flask-Migrate Flask-SQLAlchemy Flask-WTF Flask-Login Flask-Bcrypt wtforms_alchemy WTForms psycopg2-binary
+                    '''
+                }
+            }
+        }
+        stage('Run Tests') {
+            steps {
+                script {
+                    dir('Python_Web_Application/tests') {
+                        sh '''
+                        # Activate the virtual environment
+                        . ../../venv/bin/activate
+                        # Print the PATH for debugging
+                        echo $PATH
+                        # Check if pytest is accessible
+                        which pytest
+                        # Run pytest
+                        pytest test_project.py
+                        '''
+                    }
                 }
             }
         }
@@ -28,7 +73,7 @@ pipeline {
                 }
             }
         }
-    // ECR 로 이미지 푸쉬 
+    //ECR 로 이미지 푸쉬 
     stage('Push Image to ECR') {
             steps {
                 script {
@@ -44,9 +89,9 @@ pipeline {
         steps{
             script{
                         sh "kubectl set image deployment/deployment-app web-app=${DOCKER_IMAGE}:${env.BUILD_NUMBER} --record -n app-ns"
-                    }
                 }
             }
         }
     }
+}
 

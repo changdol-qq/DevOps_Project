@@ -1,0 +1,9 @@
+Flask  
+Flask-Bcrypt
+wtforms_alchemy 
+Flask-Login 
+Flask-WTF 
+WTForms 
+Flask-SQLAlchemy 
+psycopg2-binary 
+pytest
