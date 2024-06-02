@@ -5,6 +5,7 @@ from event import db, login_manager, bcrypt
 @login_manager.user_loader
 def load_user(user_id):
     return db.session.get(User, int(user_id))
+
 # 다대다 관계를 위한 중간 테이블
 user_event = db.Table(
     'user_event',
@@ -26,6 +27,7 @@ class User(db.Model, UserMixin):
     def prettier_count(self):
         return f'{self.count:,}'
 
+    # 비밀번호 보안 
     @property
     def password(self):
         raise AttributeError('Password is not a readable attribute.')
@@ -52,12 +54,14 @@ class Event(db.Model):
     def __repr__(self):
         return f'Event {self.name}'
 
+    # 사용자 이벤트 예약
     def book(self, user):
         if user not in self.users:
             self.users.append(user)
             user.count += 1
             db.session.commit()
 
+    # 사용자 이벤트 취소 
     def cancel(self, user):
         if user in self.users:
             self.users.remove(user)

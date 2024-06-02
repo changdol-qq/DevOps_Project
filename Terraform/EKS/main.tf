@@ -1,3 +1,4 @@
+#VPC
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
@@ -27,6 +28,7 @@ module "vpc" {
 
 }
 
+#EKS
 module "eks" {
   source = "terraform-aws-modules/eks/aws"
 
