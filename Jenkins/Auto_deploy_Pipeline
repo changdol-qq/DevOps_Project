@@ -7,7 +7,6 @@ pipeline {
         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
         AWS_DEFAULT_REGION = "ap-northeast-2"
-         // Ensure the .local/bin directory is in the PATH for global access
         PATH = "${env.PATH}:/var/lib/jenkins/.local/bin"
     }
     //체크 아웃
@@ -22,9 +21,7 @@ pipeline {
         stage('Setup Virtual Environment') {
             steps {
                 script {
-                    // Create a virtual environment
                     sh 'sudo python3 -m venv venv'
-                    // Activate the virtual environment and upgrade pip
                     sh '''
                     . venv/bin/activate
                     sudo pip install --upgrade pip
@@ -35,7 +32,6 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    // Activate the virtual environment and install dependencies
                     sh '''
                     . venv/bin/activate
                     sudo pip install --ignore-installed blinker
@@ -62,7 +58,6 @@ pipeline {
                 }
             }
         }
-    // 도커 이미지  생성 
     stage('Build Docker Image') {
             steps {
                 script {
@@ -73,7 +68,6 @@ pipeline {
                 }
             }
         }
-    //ECR 로 이미지 푸쉬 
     stage('Push Image to ECR') {
             steps {
                 script {
@@ -84,7 +78,6 @@ pipeline {
                 }
             }
         }
-    // 파드 배포 
     stage('Deploy pod'){
         steps{
             script{

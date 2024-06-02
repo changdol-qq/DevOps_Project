@@ -63,17 +63,5 @@ pipeline {
                 }
             }
         }
-        // 웹 어플리 케이션 자동 배포 
-        stage('Deploying Application') {
-            steps{
-                script{
-                    dir('Kubernetes') {
-                        sh 'aws eks update-kubeconfig --name my-eks-cluster'
-                        sh 'kubectl apply -f deployment.yaml'
-                        sh 'kubectl apply -f service.yaml'
-                    }
-                }
-            }
-        }
     }
 }
